@@ -1,0 +1,31 @@
+[gd_scene load_steps=8 format=3 uid="uid://b82esmi8uf7hq"]
+
+[ext_resource type="Script" uid="uid://b100aj173bkxb" path="res://Scripts/quest_system.gd" id="1_5x434"]
+[ext_resource type="Script" uid="uid://c14np4eojhe8v" path="res://Scripts/time_system.gd" id="2_wa114"]
+[ext_resource type="Script" uid="uid://cj4qy8m83ling" path="res://Scripts/role_system.gd" id="3_v64tm"]
+[ext_resource type="Script" uid="uid://hvpdo7cd1dhw" path="res://Data/Roles/role.gd" id="4_7uy66"]
+[ext_resource type="Resource" uid="uid://bo8yxm405ih43" path="res://Data/Roles/villager.tres" id="5_c2o82"]
+[ext_resource type="Resource" uid="uid://d227tim00ssh0" path="res://Data/Roles/werewolf.tres" id="6_egfig"]
+
+[sub_resource type="GDScript" id="GDScript_5x434"]
+script/source = "extends Node
+"
+
+[node name="Systems" type="Node"]
+script = SubResource("GDScript_5x434")
+
+[node name="quest_system" type="Node" parent="."]
+unique_name_in_owner = true
+script = ExtResource("1_5x434")
+
+[node name="time_system" type="Node" parent="."]
+unique_name_in_owner = true
+script = ExtResource("2_wa114")
+
+[node name="role_system" type="Node" parent="."]
+unique_name_in_owner = true
+script = ExtResource("3_v64tm")
+available_roles = Dictionary[ExtResource("4_7uy66"), int]({
+ExtResource("5_c2o82"): 1,
+ExtResource("6_egfig"): 1
+})

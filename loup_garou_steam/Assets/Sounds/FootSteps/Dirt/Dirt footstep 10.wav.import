@@ -1,0 +1,24 @@
+[remap]
+
+importer="wav"
+type="AudioStreamWAV"
+uid="uid://cg48ayrcnr5n6"
+path="res://.godot/imported/Dirt footstep 10.wav-36be2a8328310f6da8f8452e7d956bf2.sample"
+
+[deps]
+
+source_file="res://Assets/Sounds/FootSteps/Dirt/Dirt footstep 10.wav"
+dest_files=["res://.godot/imported/Dirt footstep 10.wav-36be2a8328310f6da8f8452e7d956bf2.sample"]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=false
+edit/loop_mode=0
+edit/loop_begin=0
+edit/loop_end=-1
+compress/mode=2

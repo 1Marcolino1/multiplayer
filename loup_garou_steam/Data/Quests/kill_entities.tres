@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="Quest" load_steps=3 format=3 uid="uid://kmvd7a1lpaq5"]
+
+[ext_resource type="Resource" uid="uid://dn8ufurmt5ihy" path="res://Data/Entities/skeleton_warrior.tres" id="1_ixf02"]
+[ext_resource type="Script" uid="uid://dpcjeuql0saax" path="res://Data/Quests/quest.gd" id="1_stiw1"]
+
+[resource]
+resource_local_to_scene = true
+script = ExtResource("1_stiw1")
+id = 0
+title = "Kill entities"
+entity_type = ExtResource("1_ixf02")
+current_count = 0
+needed_count = 5
+metadata/_custom_type_script = "uid://dpcjeuql0saax"

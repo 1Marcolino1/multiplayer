@@ -1,0 +1,19 @@
+[gd_scene load_steps=3 format=3 uid="uid://b70wcwes2ngcp"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_haro7"]
+size = Vector3(0.230839, 0.0746765, 0.222137)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_56vhr"]
+size = Vector3(0.230469, 0.0688475, 0.216309)
+
+[node name="FloorDetector" type="Area3D"]
+collision_layer = 0
+collision_mask = 4
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.258381, 0.0248238, -0.0146027)
+shape = SubResource("BoxShape3D_haro7")
+
+[node name="CollisionShape3D2" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.196777, 0.0266174, -0.0129395)
+shape = SubResource("BoxShape3D_56vhr")

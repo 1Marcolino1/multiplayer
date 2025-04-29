@@ -1,0 +1,16 @@
+[gd_scene load_steps=3 format=3 uid="uid://cbvmlxca0phc3"]
+
+[ext_resource type="PackedScene" uid="uid://bfl1x032peadn" path="res://Assets/KayKit_Adventurers_1.0_FREE/Assets/fbx/axe_1handed.fbx" id="1_miihn"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_miihn"]
+size = Vector3(0.254394, 0.545975, 0.644943)
+
+[node name="axe_1handed" instance=ExtResource("1_miihn")]
+
+[node name="HitBoxArea3D" type="Area3D" parent="." index="1"]
+collision_layer = 0
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="HitBoxArea3D" index="0"]
+transform = Transform3D(0.999842, 0.0177676, 0.00227873, -0.0176894, 0.99938, -0.0306642, -0.00282213, 0.0306191, 0.999534, 0.216022, 0.65675, 0.0151698)
+shape = SubResource("BoxShape3D_miihn")
+disabled = true

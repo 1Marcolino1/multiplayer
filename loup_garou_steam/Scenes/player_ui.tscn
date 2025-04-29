@@ -1,0 +1,81 @@
+[gd_scene load_steps=4 format=3 uid="uid://4hdpnuwx1plh"]
+
+[ext_resource type="PackedScene" uid="uid://bsp63dn1b61p5" path="res://Scenes/UI/quest_board_ui.tscn" id="1_ohrjl"]
+[ext_resource type="FontFile" uid="uid://jfmge75xus5h" path="res://Assets/Fonts/VT323-Regular.ttf" id="2_dxtgh"]
+
+[sub_resource type="GDScript" id="GDScript_ohrjl"]
+script/source = "extends CanvasLayer
+
+
+@export var clock_time:Label
+@export var start_game_button:Button
+@export var role_announcement_label:Label
+@export var quest_board:Panel
+"
+
+[node name="UI" type="CanvasLayer" node_paths=PackedStringArray("clock_time", "start_game_button", "role_announcement_label", "quest_board")]
+follow_viewport_enabled = true
+script = SubResource("GDScript_ohrjl")
+clock_time = NodePath("Clock")
+start_game_button = NodePath("start_game_button")
+role_announcement_label = NodePath("RoleLabel")
+quest_board = NodePath("HBoxContainer/CenterContainer/quest_board")
+
+[node name="HBoxContainer" type="HBoxContainer" parent="."]
+offset_right = 1920.0
+offset_bottom = 1085.0
+mouse_filter = 2
+
+[node name="Control" type="Control" parent="HBoxContainer"]
+custom_minimum_size = Vector2(1500, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+mouse_filter = 2
+
+[node name="CenterContainer" type="CenterContainer" parent="HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="quest_board" parent="HBoxContainer/CenterContainer" instance=ExtResource("1_ohrjl")]
+layout_mode = 2
+
+[node name="Control2" type="Control" parent="HBoxContainer"]
+custom_minimum_size = Vector2(20, 0)
+layout_mode = 2
+
+[node name="Clock" type="Label" parent="."]
+custom_minimum_size = Vector2(100, 100)
+offset_left = 1802.0
+offset_right = 1904.0
+offset_bottom = 100.0
+theme_override_font_sizes/font_size = 40
+text = "20:00"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="start_game_button" type="Button" parent="."]
+visible = false
+custom_minimum_size = Vector2(100, 80)
+offset_left = 54.0
+offset_top = 942.0
+offset_right = 154.0
+offset_bottom = 1022.0
+text = "Start Game"
+
+[node name="RoleLabel" type="Label" parent="."]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -67.5
+offset_top = -11.5
+offset_right = 67.5
+offset_bottom = 5.5
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 4
+theme_override_fonts/font = ExtResource("2_dxtgh")
+theme_override_font_sizes/font_size = 60
+horizontal_alignment = 1
+vertical_alignment = 1

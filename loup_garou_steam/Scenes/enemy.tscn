@@ -1,0 +1,205 @@
+[gd_scene load_steps=19 format=3 uid="uid://cqj5w5crdlsxp"]
+
+[ext_resource type="Script" uid="uid://ddyb0s4167gsl" path="res://Scripts/enemy.gd" id="1_vt4ob"]
+[ext_resource type="Script" uid="uid://b3uyrm3o2q0k5" path="res://Scripts/enemy_state_chart.gd" id="2_auwsv"]
+[ext_resource type="Resource" uid="uid://dn8ufurmt5ihy" path="res://Data/Entities/skeleton_warrior.tres" id="2_tk7xo"]
+[ext_resource type="Script" uid="uid://bnfob13iy7h8t" path="res://Scripts/enemy_idle.gd" id="3_8uf12"]
+[ext_resource type="Script" uid="uid://c7qi23xowkpwn" path="res://Scripts/enemy_chasing.gd" id="4_po0sg"]
+[ext_resource type="Script" uid="uid://du7cds8fa1pku" path="res://Scripts/enemy_attack.gd" id="5_8uf12"]
+[ext_resource type="Script" uid="uid://uwdqvkrpot6x" path="res://addons/godot_state_charts/state_chart.gd" id="5_haro7"]
+[ext_resource type="Script" uid="uid://v8l0qa3xm7as" path="res://addons/godot_state_charts/compound_state.gd" id="6_56vhr"]
+[ext_resource type="Script" uid="uid://cxmpc58qvqxt1" path="res://Scripts/hurt.gd" id="6_haro7"]
+[ext_resource type="Script" uid="uid://dtygar3htv0tt" path="res://Scripts/dead.gd" id="7_m4x7e"]
+[ext_resource type="Script" uid="uid://brklx4l6com0w" path="res://addons/godot_state_charts/atomic_state.gd" id="7_ta2yt"]
+[ext_resource type="Script" uid="uid://dqndbo33duyt2" path="res://addons/godot_state_charts/transition.gd" id="8_m4x7e"]
+[ext_resource type="PackedScene" uid="uid://2lu8guo0x6tr" path="res://Scenes/health_component.tscn" id="10_po0sg"]
+[ext_resource type="Script" uid="uid://mnejpuqhsi2r" path="res://Scripts/gravity_component.gd" id="12_56vhr"]
+[ext_resource type="PackedScene" uid="uid://b70wcwes2ngcp" path="res://Scenes/floor_detector.tscn" id="12_ta2yt"]
+[ext_resource type="AudioStream" uid="uid://hxnpf7ngofwk" path="res://Assets/Sounds/Bone_enemy/BREAK_Bone_or_Neck_mono.wav" id="16_hgeoe"]
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_1f0kj"]
+
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_vt4ob"]
+height = 1.27103
+radius = 5.01367
+
+[node name="Enemy" type="CharacterBody3D"]
+collision_mask = 5
+script = ExtResource("1_vt4ob")
+entity_type = ExtResource("2_tk7xo")
+hurt_sounds = Array[AudioStream]([ExtResource("16_hgeoe")])
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+shape = SubResource("CapsuleShape3D_1f0kj")
+
+[node name="NavigationAgent3D" type="NavigationAgent3D" parent="."]
+
+[node name="state_chart" type="Node" parent="."]
+unique_name_in_owner = true
+script = ExtResource("2_auwsv")
+
+[node name="idle" type="Node" parent="state_chart"]
+script = ExtResource("3_8uf12")
+
+[node name="chasing" type="Node" parent="state_chart"]
+script = ExtResource("4_po0sg")
+
+[node name="attack" type="Node" parent="state_chart"]
+script = ExtResource("5_8uf12")
+
+[node name="hurt" type="Node" parent="state_chart"]
+script = ExtResource("6_haro7")
+
+[node name="dead" type="Node" parent="state_chart"]
+script = ExtResource("7_m4x7e")
+
+[node name="Area3D" type="Area3D" parent="."]
+collision_layer = 2
+collision_mask = 3
+monitorable = false
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Area3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+shape = SubResource("CylinderShape3D_vt4ob")
+
+[node name="StateChart" type="Node" parent="."]
+script = ExtResource("5_haro7")
+metadata/_custom_type_script = "uid://uwdqvkrpot6x"
+
+[node name="CompoundState" type="Node" parent="StateChart"]
+script = ExtResource("6_56vhr")
+initial_state = NodePath("IdleState")
+
+[node name="IdleState" type="Node" parent="StateChart/CompoundState"]
+script = ExtResource("7_ta2yt")
+
+[node name="ToChase" type="Node" parent="StateChart/CompoundState/IdleState"]
+script = ExtResource("8_m4x7e")
+to = NodePath("../../ChasingState")
+event = &"target_found"
+delay_in_seconds = "0.0"
+
+[node name="ToNo" type="Node" parent="StateChart/CompoundState/IdleState"]
+script = ExtResource("8_m4x7e")
+to = NodePath("../../NoState")
+event = &"is_network_copy"
+delay_in_seconds = "0.0"
+
+[node name="ToHurt" type="Node" parent="StateChart/CompoundState/IdleState"]
+script = ExtResource("8_m4x7e")
+to = NodePath("../../HurtState")
+event = &"is_hurt"
+delay_in_seconds = "0.0"
+
+[node name="ToDead" type="Node" parent="StateChart/CompoundState/IdleState"]
+script = ExtResource("8_m4x7e")
+to = NodePath("../../DeadState")
+event = &"is_dead"
+delay_in_seconds = "0.0"
+
+[node name="PatrollingState" type="Node" parent="StateChart/CompoundState"]
+script = ExtResource("7_ta2yt")
+
+[node name="ToHurt" type="Node" parent="StateChart/CompoundState/PatrollingState"]
+script = ExtResource("8_m4x7e")
+to = NodePath("../../HurtState")
+event = &"is_hurt"
+delay_in_seconds = "0.0"
+
+[node name="ToDead" type="Node" parent="StateChart/CompoundState/PatrollingState"]
+script = ExtResource("8_m4x7e")
+to = NodePath("../../DeadState")
+event = &"is_dead"
+delay_in_seconds = "0.0"
+
+[node name="ChasingState" type="Node" parent="StateChart/CompoundState"]
+script = ExtResource("7_ta2yt")
+
+[node name="ToIdle" type="Node" parent="StateChart/CompoundState/ChasingState"]
+script = ExtResource("8_m4x7e")
+to = NodePath("../../IdleState")
+event = &"no_target"
+delay_in_seconds = "0.0"
+
+[node name="ToAttack" type="Node" parent="StateChart/CompoundState/ChasingState"]
+script = ExtResource("8_m4x7e")
+to = NodePath("../../AttackState")
+event = &"target_in_range"
+delay_in_seconds = "0.0"
+
+[node name="ToHurt" type="Node" parent="StateChart/CompoundState/ChasingState"]
+script = ExtResource("8_m4x7e")
+to = NodePath("../../HurtState")
+event = &"is_hurt"
+delay_in_seconds = "0.0"
+
+[node name="ToDead" type="Node" parent="StateChart/CompoundState/ChasingState"]
+script = ExtResource("8_m4x7e")
+to = NodePath("../../DeadState")
+event = &"is_dead"
+delay_in_seconds = "0.0"
+
+[node name="AttackState" type="Node" parent="StateChart/CompoundState"]
+script = ExtResource("7_ta2yt")
+
+[node name="ToChasing" type="Node" parent="StateChart/CompoundState/AttackState"]
+script = ExtResource("8_m4x7e")
+to = NodePath("../../ChasingState")
+event = &"attack_finished"
+delay_in_seconds = "0.0"
+
+[node name="ToHurt" type="Node" parent="StateChart/CompoundState/AttackState"]
+script = ExtResource("8_m4x7e")
+to = NodePath("../../HurtState")
+event = &"is_hurt"
+delay_in_seconds = "0.0"
+
+[node name="ToDead" type="Node" parent="StateChart/CompoundState/AttackState"]
+script = ExtResource("8_m4x7e")
+to = NodePath("../../DeadState")
+event = &"is_dead"
+delay_in_seconds = "0.0"
+
+[node name="NoState" type="Node" parent="StateChart/CompoundState"]
+script = ExtResource("7_ta2yt")
+
+[node name="HurtState" type="Node" parent="StateChart/CompoundState"]
+script = ExtResource("7_ta2yt")
+
+[node name="ToIdle" type="Node" parent="StateChart/CompoundState/HurtState"]
+script = ExtResource("8_m4x7e")
+to = NodePath("../../IdleState")
+event = &"hurt_finished"
+delay_in_seconds = "0.0"
+
+[node name="DeadState" type="Node" parent="StateChart/CompoundState"]
+script = ExtResource("7_ta2yt")
+
+[node name="health_component" parent="." instance=ExtResource("10_po0sg")]
+unique_name_in_owner = true
+
+[node name="gravity_component" type="Node" parent="."]
+script = ExtResource("12_56vhr")
+
+[node name="FloorDetector" parent="." instance=ExtResource("12_ta2yt")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.000995174, 0)
+
+[node name="AudioStreamPlayer3D" type="AudioStreamPlayer3D" parent="."]
+bus = &"SFX"
+
+[connection signal="body_entered" from="Area3D" to="state_chart" method="_on_area_3d_body_entered"]
+[connection signal="body_exited" from="Area3D" to="state_chart" method="_on_area_3d_body_exited"]
+[connection signal="state_entered" from="StateChart/CompoundState/IdleState" to="state_chart/idle" method="_on_idle_state_state_entered"]
+[connection signal="state_processing" from="StateChart/CompoundState/IdleState" to="state_chart/idle" method="_on_idle_state_state_processing"]
+[connection signal="state_entered" from="StateChart/CompoundState/ChasingState" to="state_chart/chasing" method="_on_chasing_state_state_entered"]
+[connection signal="state_exited" from="StateChart/CompoundState/ChasingState" to="state_chart/chasing" method="_on_chasing_state_state_exited"]
+[connection signal="state_physics_processing" from="StateChart/CompoundState/ChasingState" to="state_chart/chasing" method="_on_chasing_state_state_physics_processing"]
+[connection signal="state_processing" from="StateChart/CompoundState/ChasingState" to="state_chart/chasing" method="_on_chasing_state_state_processing"]
+[connection signal="state_entered" from="StateChart/CompoundState/AttackState" to="state_chart/attack" method="_on_attack_state_state_entered"]
+[connection signal="state_exited" from="StateChart/CompoundState/AttackState" to="state_chart/attack" method="_on_attack_state_state_exited"]
+[connection signal="state_physics_processing" from="StateChart/CompoundState/AttackState" to="state_chart/attack" method="_on_attack_state_state_physics_processing"]
+[connection signal="state_processing" from="StateChart/CompoundState/AttackState" to="state_chart/attack" method="_on_attack_state_state_processing"]
+[connection signal="state_entered" from="StateChart/CompoundState/HurtState" to="state_chart/hurt" method="_on_hurt_state_state_entered"]
+[connection signal="state_exited" from="StateChart/CompoundState/HurtState" to="state_chart/hurt" method="_on_hurt_state_state_exited"]
+[connection signal="state_entered" from="StateChart/CompoundState/DeadState" to="state_chart/dead" method="_on_dead_state_state_entered"]

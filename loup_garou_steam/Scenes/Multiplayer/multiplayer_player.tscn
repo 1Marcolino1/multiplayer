@@ -1,0 +1,307 @@
+[gd_scene load_steps=37 format=3 uid="uid://brpyvslt3qc5e"]
+
+[ext_resource type="Script" uid="uid://v0ihyrhoec0q" path="res://Scripts/multiplayer_player.gd" id="1_uvoid"]
+[ext_resource type="AudioStream" uid="uid://chtpa3a8hlk0m" path="res://Assets/Sounds/Axe/WHOOSH_Air_Fast_Wind_Subtle_RR1_mono.wav" id="2_56g75"]
+[ext_resource type="Resource" uid="uid://diad35en8f1ft" path="res://Data/Entities/player.tres" id="2_worja"]
+[ext_resource type="Script" uid="uid://be5lj0p2h8kq7" path="res://Scripts/input_synchronizer.gd" id="2_xtb2i"]
+[ext_resource type="AudioStream" uid="uid://bgq2ifdb66ka0" path="res://Assets/Sounds/Axe/WHOOSH_Air_Fast_Wind_Subtle_RR2_mono.wav" id="3_7m1pg"]
+[ext_resource type="Script" uid="uid://uwdqvkrpot6x" path="res://addons/godot_state_charts/state_chart.gd" id="3_jec6o"]
+[ext_resource type="Script" uid="uid://vbwfwhi5g0h1" path="res://addons/godot_state_charts/parallel_state.gd" id="4_41aeh"]
+[ext_resource type="Script" uid="uid://v8l0qa3xm7as" path="res://addons/godot_state_charts/compound_state.gd" id="4_bj8nr"]
+[ext_resource type="AudioStream" uid="uid://dwdw2117xam1x" path="res://Assets/Sounds/FootSteps/Dirt/Dirt footstep 1.wav" id="5_sgqhf"]
+[ext_resource type="Script" uid="uid://brklx4l6com0w" path="res://addons/godot_state_charts/atomic_state.gd" id="5_wjxcr"]
+[ext_resource type="AudioStream" uid="uid://xak1aqetxiim" path="res://Assets/Sounds/FootSteps/Dirt/Dirt footstep 2.wav" id="6_2p4gq"]
+[ext_resource type="Script" uid="uid://b8uownr53m6qm" path="res://Scripts/state_chart.gd" id="6_bj8nr"]
+[ext_resource type="Script" uid="uid://dqndbo33duyt2" path="res://addons/godot_state_charts/transition.gd" id="6_lfemr"]
+[ext_resource type="AudioStream" uid="uid://5wlyj73ct0ut" path="res://Assets/Sounds/FootSteps/Dirt/Dirt footstep 3.wav" id="7_6757q"]
+[ext_resource type="Script" uid="uid://cstck4yv1yxbb" path="res://Scripts/idle.gd" id="7_wjxcr"]
+[ext_resource type="AudioStream" uid="uid://b0uwx3pxyh43e" path="res://Assets/Sounds/FootSteps/Dirt/Dirt footstep 4.wav" id="8_fiwuw"]
+[ext_resource type="Script" uid="uid://bft35jjad3ifp" path="res://Scripts/move.gd" id="9_khkwq"]
+[ext_resource type="AudioStream" uid="uid://dcljlqmljr2mr" path="res://Assets/Sounds/FootSteps/Dirt/Dirt footstep 5.wav" id="9_xaqe3"]
+[ext_resource type="PackedScene" uid="uid://baxnu31nuk6m2" path="res://Scenes/model_scenes/Characters/barbarian.tscn" id="10_3p2tv"]
+[ext_resource type="Script" uid="uid://d17526bxmx6fp" path="res://Scripts/attack.gd" id="11_qopyg"]
+[ext_resource type="Script" uid="uid://cxmpc58qvqxt1" path="res://Scripts/hurt.gd" id="12_2dufm"]
+[ext_resource type="Script" uid="uid://c6dwfepq1v1f4" path="res://Scripts/voice_chat.gd" id="13_qopyg"]
+[ext_resource type="Script" uid="uid://dtygar3htv0tt" path="res://Scripts/dead.gd" id="13_uuvo0"]
+[ext_resource type="Script" uid="uid://cf4c166uo68c3" path="res://Scripts/throw.gd" id="14_n73ro"]
+[ext_resource type="PackedScene" uid="uid://2lu8guo0x6tr" path="res://Scenes/health_component.tscn" id="15_2dufm"]
+[ext_resource type="Script" uid="uid://mnejpuqhsi2r" path="res://Scripts/gravity_component.gd" id="16_sv26a"]
+[ext_resource type="PackedScene" uid="uid://b70wcwes2ngcp" path="res://Scenes/floor_detector.tscn" id="17_pykxb"]
+[ext_resource type="Script" uid="uid://b4d78jr0fto8b" path="res://Scripts/projectile_system.gd" id="19_ub4yi"]
+[ext_resource type="PackedScene" uid="uid://mrhwiixmglll" path="res://Scenes/projectile.tscn" id="21_nj0xe"]
+[ext_resource type="AudioStream" uid="uid://g4yjrrkoqngb" path="res://Assets/Sounds/Axe/WHOOSH_Air_Slow_RR9_mono.wav" id="22_csxrd"]
+[ext_resource type="AudioStream" uid="uid://hxnpf7ngofwk" path="res://Assets/Sounds/Bone_enemy/BREAK_Bone_or_Neck_mono.wav" id="23_ilb8x"]
+
+[sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_xtb2i"]
+properties/0/path = NodePath(".:player_id")
+properties/0/spawn = true
+properties/0/replication_mode = 2
+
+[sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_rql8f"]
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_xtb2i"]
+
+[sub_resource type="GDScript" id="GDScript_lfemr"]
+script/source = "extends Node
+
+
+
+func _on_isolated_state_state_entered() -> void:
+	print(\"Network copy got isolated \" + str($\"../..\".player_id))
+"
+
+[sub_resource type="GDScript" id="GDScript_wowbu"]
+script/source = "extends Node
+
+
+func _on_no_state_state_entered() -> void:
+	
+	if multiplayer.is_server() :
+		pass
+	#Tous les peers qui ne sont ni le serveur ni le joueur concerné
+	elif $\"../..\".player_id != multiplayer.get_unique_id() :
+		$\"../../StateChart\".send_event(\"is_network_copy\")
+	#Le joueur concerné
+	else :
+		pass
+		
+		
+
+func _on_no_state_state_processing(delta: float) -> void:
+	if %state_chart.attack_input :
+		$\"../../StateChart\".send_event(\"player_attacked\")
+	if %state_chart.hold_input :
+		$\"../../StateChart\".send_event(\"player_holding_attack\")
+	
+
+func _on_no_state_state_exited() -> void:
+	pass
+"
+
+[node name="multiplayer_player" type="CharacterBody3D"]
+collision_mask = 6
+script = ExtResource("1_uvoid")
+entity_type = ExtResource("2_worja")
+attack_sounds = Array[AudioStream]([ExtResource("2_56g75"), ExtResource("3_7m1pg")])
+hurt_sounds = Array[AudioStream]([ExtResource("23_ilb8x")])
+footsteps_sounds = Array[AudioStream]([ExtResource("5_sgqhf"), ExtResource("6_2p4gq"), ExtResource("7_6757q"), ExtResource("8_fiwuw"), ExtResource("9_xaqe3")])
+
+[node name="PlayerSynchronizer" type="MultiplayerSynchronizer" parent="."]
+replication_config = SubResource("SceneReplicationConfig_xtb2i")
+
+[node name="InputSynchronizer" type="MultiplayerSynchronizer" parent="."]
+unique_name_in_owner = true
+replication_config = SubResource("SceneReplicationConfig_rql8f")
+script = ExtResource("2_xtb2i")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.00033, 0)
+shape = SubResource("CapsuleShape3D_xtb2i")
+
+[node name="StateChart" type="Node" parent="."]
+script = ExtResource("3_jec6o")
+metadata/_custom_type_script = "uid://uwdqvkrpot6x"
+
+[node name="ParallelState" type="Node" parent="StateChart"]
+script = ExtResource("4_41aeh")
+
+[node name="CompoundState" type="Node" parent="StateChart/ParallelState"]
+script = ExtResource("4_bj8nr")
+initial_state = NodePath("IdleState")
+
+[node name="IdleState" type="Node" parent="StateChart/ParallelState/CompoundState"]
+script = ExtResource("5_wjxcr")
+
+[node name="ToIsolated" type="Node" parent="StateChart/ParallelState/CompoundState/IdleState"]
+script = ExtResource("6_lfemr")
+to = NodePath("../../IsolatedState")
+event = &"is_network_copy"
+delay_in_seconds = "0.0"
+
+[node name="ToMove" type="Node" parent="StateChart/ParallelState/CompoundState/IdleState"]
+script = ExtResource("6_lfemr")
+to = NodePath("../../MoveState")
+event = &"player_moved"
+delay_in_seconds = "0.0"
+
+[node name="ToDead" type="Node" parent="StateChart/ParallelState/CompoundState/IdleState"]
+script = ExtResource("6_lfemr")
+to = NodePath("../../DeadState")
+event = &"is_dead"
+delay_in_seconds = "0.0"
+
+[node name="MoveState" type="Node" parent="StateChart/ParallelState/CompoundState"]
+script = ExtResource("5_wjxcr")
+
+[node name="ToIdle" type="Node" parent="StateChart/ParallelState/CompoundState/MoveState"]
+script = ExtResource("6_lfemr")
+to = NodePath("../../IdleState")
+event = &"player_stopped"
+delay_in_seconds = "0.0"
+
+[node name="ToDead" type="Node" parent="StateChart/ParallelState/CompoundState/MoveState"]
+script = ExtResource("6_lfemr")
+to = NodePath("../../DeadState")
+event = &"is_dead"
+delay_in_seconds = "0.0"
+
+[node name="IsolatedState" type="Node" parent="StateChart/ParallelState/CompoundState"]
+script = ExtResource("5_wjxcr")
+
+[node name="DeadState" type="Node" parent="StateChart/ParallelState/CompoundState"]
+script = ExtResource("5_wjxcr")
+
+[node name="CompoundState2" type="Node" parent="StateChart/ParallelState"]
+script = ExtResource("4_bj8nr")
+initial_state = NodePath("NoState")
+
+[node name="NoState" type="Node" parent="StateChart/ParallelState/CompoundState2"]
+script = ExtResource("5_wjxcr")
+
+[node name="ToIsolated" type="Node" parent="StateChart/ParallelState/CompoundState2/NoState"]
+script = ExtResource("6_lfemr")
+to = NodePath("../../IsolatedState")
+event = &"is_network_copy"
+delay_in_seconds = "0.0"
+
+[node name="ToAttack" type="Node" parent="StateChart/ParallelState/CompoundState2/NoState"]
+script = ExtResource("6_lfemr")
+to = NodePath("../../AttackState")
+event = &"player_attacked"
+delay_in_seconds = "0.0"
+
+[node name="ToHurt" type="Node" parent="StateChart/ParallelState/CompoundState2/NoState"]
+script = ExtResource("6_lfemr")
+to = NodePath("../../HurtState")
+event = &"is_hurt"
+delay_in_seconds = "0.0"
+
+[node name="ToHold" type="Node" parent="StateChart/ParallelState/CompoundState2/NoState"]
+script = ExtResource("6_lfemr")
+to = NodePath("../../ThrowState")
+event = &"player_holding_attack"
+delay_in_seconds = "0.0"
+
+[node name="AttackState" type="Node" parent="StateChart/ParallelState/CompoundState2"]
+script = ExtResource("5_wjxcr")
+
+[node name="ToNo" type="Node" parent="StateChart/ParallelState/CompoundState2/AttackState"]
+script = ExtResource("6_lfemr")
+to = NodePath("../../NoState")
+event = &"attack_finished"
+delay_in_seconds = "0.0"
+
+[node name="IsolatedState" type="Node" parent="StateChart/ParallelState/CompoundState2"]
+script = ExtResource("5_wjxcr")
+
+[node name="HurtState" type="Node" parent="StateChart/ParallelState/CompoundState2"]
+script = ExtResource("5_wjxcr")
+
+[node name="ToNo" type="Node" parent="StateChart/ParallelState/CompoundState2/HurtState"]
+script = ExtResource("6_lfemr")
+to = NodePath("../../NoState")
+event = &"hurt_finished"
+delay_in_seconds = "0.0"
+
+[node name="ThrowState" type="Node" parent="StateChart/ParallelState/CompoundState2"]
+script = ExtResource("5_wjxcr")
+
+[node name="ToNo" type="Node" parent="StateChart/ParallelState/CompoundState2/ThrowState"]
+script = ExtResource("6_lfemr")
+to = NodePath("../../NoState")
+event = &"attack_finished"
+delay_in_seconds = "0.0"
+
+[node name="state_chart" type="Node" parent="." node_paths=PackedStringArray("model")]
+unique_name_in_owner = true
+script = ExtResource("6_bj8nr")
+model = NodePath("../Barbarian")
+
+[node name="idle" type="Node" parent="state_chart"]
+script = ExtResource("7_wjxcr")
+
+[node name="move" type="Node" parent="state_chart"]
+script = ExtResource("9_khkwq")
+
+[node name="isolated" type="Node" parent="state_chart"]
+script = SubResource("GDScript_lfemr")
+
+[node name="attack" type="Node" parent="state_chart"]
+script = ExtResource("11_qopyg")
+
+[node name="no" type="Node" parent="state_chart"]
+script = SubResource("GDScript_wowbu")
+
+[node name="hurt" type="Node" parent="state_chart"]
+script = ExtResource("12_2dufm")
+
+[node name="dead" type="Node" parent="state_chart"]
+script = ExtResource("13_uuvo0")
+
+[node name="throw" type="Node" parent="state_chart"]
+script = ExtResource("14_n73ro")
+
+[node name="Barbarian" parent="." node_paths=PackedStringArray("held_objects") instance=ExtResource("10_3p2tv")]
+transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 0, 0, 0)
+held_objects = {
+"big_axe": NodePath("Rig/Skeleton3D/2H_Axe"),
+"mug": NodePath("Rig/Skeleton3D/Mug"),
+"shield": NodePath("Rig/Skeleton3D/Barbarian_Round_Shield"),
+"small_axe": NodePath("Rig/Skeleton3D/1H_Axe"),
+"small_axe_offhand": NodePath("Rig/Skeleton3D/1H_Axe_Offhand")
+}
+
+[node name="Camera3D" type="Camera3D" parent="."]
+unique_name_in_owner = true
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0407984, 1.51993, 0.294659)
+
+[node name="voice_chat" type="Node" parent="."]
+script = ExtResource("13_qopyg")
+
+[node name="health_component" parent="." instance=ExtResource("15_2dufm")]
+unique_name_in_owner = true
+
+[node name="gravity_component" type="Node" parent="."]
+script = ExtResource("16_sv26a")
+
+[node name="FloorDetector" parent="." instance=ExtResource("17_pykxb")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.00442995, 0)
+
+[node name="projectile_system" type="Node3D" parent="."]
+unique_name_in_owner = true
+script = ExtResource("19_ub4yi")
+projectile_scene = ExtResource("21_nj0xe")
+
+[node name="Marker3D" type="Marker3D" parent="projectile_system"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.545412, 0.708818, -0.122753)
+
+[node name="AudioStreamPlayer3D" type="AudioStreamPlayer3D" parent="projectile_system"]
+stream = ExtResource("22_csxrd")
+bus = &"SFX"
+
+[node name="AudioStreamPlayer3D" type="AudioStreamPlayer3D" parent="."]
+bus = &"SFX"
+
+[connection signal="state_entered" from="StateChart/ParallelState/CompoundState/IdleState" to="state_chart/idle" method="_on_idle_state_state_entered"]
+[connection signal="state_exited" from="StateChart/ParallelState/CompoundState/IdleState" to="state_chart/idle" method="_on_idle_state_state_exited"]
+[connection signal="state_physics_processing" from="StateChart/ParallelState/CompoundState/IdleState" to="state_chart/idle" method="_on_idle_state_state_physics_processing"]
+[connection signal="state_processing" from="StateChart/ParallelState/CompoundState/IdleState" to="state_chart/idle" method="_on_idle_state_state_processing"]
+[connection signal="state_entered" from="StateChart/ParallelState/CompoundState/MoveState" to="state_chart/move" method="_on_move_state_state_entered"]
+[connection signal="state_exited" from="StateChart/ParallelState/CompoundState/MoveState" to="state_chart/move" method="_on_move_state_state_exited"]
+[connection signal="state_processing" from="StateChart/ParallelState/CompoundState/MoveState" to="state_chart/move" method="_on_move_state_state_processing"]
+[connection signal="state_entered" from="StateChart/ParallelState/CompoundState/IsolatedState" to="state_chart/isolated" method="_on_isolated_state_state_entered"]
+[connection signal="state_entered" from="StateChart/ParallelState/CompoundState/DeadState" to="state_chart/dead" method="_on_dead_state_state_entered"]
+[connection signal="state_entered" from="StateChart/ParallelState/CompoundState2/NoState" to="state_chart/no" method="_on_no_state_state_entered"]
+[connection signal="state_exited" from="StateChart/ParallelState/CompoundState2/NoState" to="state_chart/no" method="_on_no_state_state_exited"]
+[connection signal="state_processing" from="StateChart/ParallelState/CompoundState2/NoState" to="state_chart/no" method="_on_no_state_state_processing"]
+[connection signal="state_entered" from="StateChart/ParallelState/CompoundState2/AttackState" to="state_chart/attack" method="_on_attack_state_state_entered"]
+[connection signal="state_exited" from="StateChart/ParallelState/CompoundState2/AttackState" to="state_chart/attack" method="_on_attack_state_state_exited"]
+[connection signal="state_physics_processing" from="StateChart/ParallelState/CompoundState2/AttackState" to="state_chart/attack" method="_on_attack_state_state_physics_processing"]
+[connection signal="state_processing" from="StateChart/ParallelState/CompoundState2/AttackState" to="state_chart/attack" method="_on_attack_state_state_processing"]
+[connection signal="state_entered" from="StateChart/ParallelState/CompoundState2/HurtState" to="state_chart/hurt" method="_on_hurt_state_state_entered"]
+[connection signal="state_exited" from="StateChart/ParallelState/CompoundState2/HurtState" to="state_chart/hurt" method="_on_hurt_state_state_exited"]
+[connection signal="state_processing" from="StateChart/ParallelState/CompoundState2/HurtState" to="state_chart/hurt" method="_on_hurt_state_state_processing"]
+[connection signal="state_entered" from="StateChart/ParallelState/CompoundState2/ThrowState" to="state_chart/throw" method="_on_throw_state_state_entered"]
+[connection signal="state_exited" from="StateChart/ParallelState/CompoundState2/ThrowState" to="state_chart/throw" method="_on_throw_state_state_exited"]
+[connection signal="area_entered" from="FloorDetector" to="gravity_component" method="_on_floor_detector_area_entered"]
+[connection signal="area_exited" from="FloorDetector" to="gravity_component" method="_on_floor_detector_area_exited"]

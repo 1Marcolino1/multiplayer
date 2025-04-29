@@ -1,0 +1,211 @@
+[gd_resource type="AnimationNodeStateMachine" load_steps=37 format=3 uid="uid://cy64n1dnu41x5"]
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_sq5f6"]
+animation = &"skeleton_warrior_anims/Idle"
+use_custom_timeline = true
+timeline_length = 1.0
+stretch_time_scale = true
+start_offset = 0.0
+loop_mode = 1
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_ubqvv"]
+animation = &"skeleton_warrior_anims/Idle"
+use_custom_timeline = true
+timeline_length = 1.067
+stretch_time_scale = true
+start_offset = 0.0
+loop_mode = 0
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_jaeif"]
+animation = &"skeleton_warrior_anims/1H_Melee_Attack_Chop"
+use_custom_timeline = true
+timeline_length = 1.067
+stretch_time_scale = true
+start_offset = 0.0
+loop_mode = 0
+
+[sub_resource type="AnimationNodeBlend2" id="AnimationNodeBlend2_d811w"]
+filters = ["Rig/Skeleton3D:chest", "Rig/Skeleton3D:elbowIK.l", "Rig/Skeleton3D:elbowIK.r", "Rig/Skeleton3D:hand.l", "Rig/Skeleton3D:hand.r", "Rig/Skeleton3D:handIK.l", "Rig/Skeleton3D:handIK.r", "Rig/Skeleton3D:handslot.l", "Rig/Skeleton3D:handslot.r", "Rig/Skeleton3D:head", "Rig/Skeleton3D:hips", "Rig/Skeleton3D:lowerarm.l", "Rig/Skeleton3D:lowerarm.r", "Rig/Skeleton3D:spine", "Rig/Skeleton3D:upperarm.l", "Rig/Skeleton3D:upperarm.r"]
+
+[sub_resource type="AnimationNodeBlendTree" id="AnimationNodeBlendTree_fewmc"]
+graph_offset = Vector2(-521.484, 162.635)
+nodes/Animation/node = SubResource("AnimationNodeAnimation_jaeif")
+nodes/Animation/position = Vector2(-160, 140)
+"nodes/Animation 2/node" = SubResource("AnimationNodeAnimation_ubqvv")
+"nodes/Animation 2/position" = Vector2(-46.6375, 421.432)
+nodes/Blend2/node = SubResource("AnimationNodeBlend2_d811w")
+nodes/Blend2/position = Vector2(260, 320)
+nodes/output/position = Vector2(600, 260)
+node_connections = [&"Blend2", 0, &"Animation 2", &"Blend2", 1, &"Animation", &"output", 0, &"Blend2"]
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_3vwwc"]
+animation = &"skeleton_warrior_anims/Hit_A"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_mw7wq"]
+animation = &"skeleton_warrior_anims/Idle"
+
+[sub_resource type="AnimationNodeBlend2" id="AnimationNodeBlend2_w1mfo"]
+
+[sub_resource type="AnimationNodeBlendTree" id="AnimationNodeBlendTree_23ixv"]
+nodes/Animation/node = SubResource("AnimationNodeAnimation_mw7wq")
+nodes/Animation/position = Vector2(-380, 280)
+"nodes/Animation 2/node" = SubResource("AnimationNodeAnimation_3vwwc")
+"nodes/Animation 2/position" = Vector2(-420, 500)
+nodes/Blend2/node = SubResource("AnimationNodeBlend2_w1mfo")
+nodes/Blend2/position = Vector2(40, 200)
+node_connections = [&"Blend2", 0, &"Animation", &"Blend2", 1, &"Animation 2", &"output", 0, &"Blend2"]
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_w1mfo"]
+animation = &"skeleton_warrior_anims/Hit_A"
+use_custom_timeline = true
+timeline_length = 1.0
+stretch_time_scale = true
+start_offset = 0.0
+loop_mode = 0
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_23ixv"]
+animation = &"skeleton_warrior_anims/Walking_A"
+use_custom_timeline = true
+timeline_length = 1.0
+stretch_time_scale = true
+start_offset = 0.0
+loop_mode = 0
+
+[sub_resource type="AnimationNodeBlend2" id="AnimationNodeBlend2_5w8lr"]
+filters = ["Rig/Skeleton3D:chest", "Rig/Skeleton3D:elbowIK.l", "Rig/Skeleton3D:elbowIK.r", "Rig/Skeleton3D:handIK.l", "Rig/Skeleton3D:handIK.r", "Rig/Skeleton3D:hips", "Rig/Skeleton3D:spine"]
+
+[sub_resource type="AnimationNodeBlendTree" id="AnimationNodeBlendTree_3vwwc"]
+graph_offset = Vector2(-710.136, 183.611)
+nodes/Animation/node = SubResource("AnimationNodeAnimation_23ixv")
+nodes/Animation/position = Vector2(-314.186, 297.749)
+"nodes/Animation 2/node" = SubResource("AnimationNodeAnimation_w1mfo")
+"nodes/Animation 2/position" = Vector2(-189.36, 506.504)
+nodes/Blend2/node = SubResource("AnimationNodeBlend2_5w8lr")
+nodes/Blend2/position = Vector2(51.0136, 227.349)
+node_connections = [&"Blend2", 0, &"Animation", &"Blend2", 1, &"Animation 2", &"output", 0, &"Blend2"]
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_b1nvr"]
+animation = &"skeleton_warrior_anims/Walking_A"
+use_custom_timeline = true
+timeline_length = 1.0
+stretch_time_scale = true
+start_offset = 0.0
+loop_mode = 1
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_d811w"]
+animation = &"skeleton_warrior_anims/1H_Melee_Attack_Chop"
+use_custom_timeline = true
+timeline_length = 1.067
+stretch_time_scale = false
+start_offset = 0.0
+loop_mode = 0
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_fewmc"]
+animation = &"skeleton_warrior_anims/Walking_A"
+use_custom_timeline = true
+timeline_length = 1.067
+stretch_time_scale = true
+start_offset = 0.0
+loop_mode = 0
+
+[sub_resource type="AnimationNodeBlend2" id="AnimationNodeBlend2_22elc"]
+filters = ["Rig/Skeleton3D:chest", "Rig/Skeleton3D:elbowIK.l", "Rig/Skeleton3D:elbowIK.r", "Rig/Skeleton3D:hand.l", "Rig/Skeleton3D:hand.r", "Rig/Skeleton3D:handIK.l", "Rig/Skeleton3D:handIK.r", "Rig/Skeleton3D:handslot.l", "Rig/Skeleton3D:handslot.r", "Rig/Skeleton3D:head", "Rig/Skeleton3D:hips", "Rig/Skeleton3D:lowerarm.l", "Rig/Skeleton3D:lowerarm.r", "Rig/Skeleton3D:root", "Rig/Skeleton3D:spine", "Rig/Skeleton3D:upperarm.l", "Rig/Skeleton3D:upperarm.r"]
+
+[sub_resource type="AnimationNodeBlendTree" id="AnimationNodeBlendTree_rexfu"]
+graph_offset = Vector2(-608.261, 68.226)
+nodes/Animation/node = SubResource("AnimationNodeAnimation_fewmc")
+nodes/Animation/position = Vector2(-280, 180)
+"nodes/Animation 2/node" = SubResource("AnimationNodeAnimation_d811w")
+"nodes/Animation 2/position" = Vector2(-300, 420)
+nodes/Blend2/node = SubResource("AnimationNodeBlend2_22elc")
+nodes/Blend2/position = Vector2(60, 120)
+node_connections = [&"Blend2", 0, &"Animation", &"Blend2", 1, &"Animation 2", &"output", 0, &"Blend2"]
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_5w8lr"]
+animation = &"skeleton_warrior_anims/Death_A"
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_ubqvv"]
+advance_mode = 2
+advance_condition = &"is_moving"
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_jaeif"]
+advance_mode = 2
+advance_condition = &"is_stopped"
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_sq5f6"]
+advance_mode = 2
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_qdttd"]
+advance_mode = 2
+advance_condition = &"is_attacking"
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_b1nvr"]
+advance_mode = 2
+advance_condition = &"is_attacking"
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_d811w"]
+switch_mode = 2
+advance_mode = 2
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_fewmc"]
+switch_mode = 2
+advance_mode = 2
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_5w8lr"]
+advance_mode = 2
+advance_condition = &"is_hurt"
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_tixal"]
+switch_mode = 2
+advance_mode = 2
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_3vwwc"]
+advance_mode = 2
+advance_condition = &"is_hurt"
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_mw7wq"]
+switch_mode = 2
+advance_mode = 2
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_w1mfo"]
+advance_mode = 2
+advance_condition = &"is_hurt"
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_23ixv"]
+advance_mode = 2
+advance_condition = &"is_hurt"
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_lylrq"]
+advance_mode = 2
+advance_condition = &"is_dead"
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_8r2w0"]
+advance_mode = 2
+advance_condition = &"is_dead"
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_0t0jh"]
+advance_mode = 2
+advance_condition = &"is_dead"
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_xv815"]
+advance_mode = 2
+advance_condition = &"is_dead"
+
+[resource]
+states/Idle/node = SubResource("AnimationNodeAnimation_sq5f6")
+states/Idle/position = Vector2(314, 100)
+states/IdleAttack/node = SubResource("AnimationNodeBlendTree_fewmc")
+states/IdleAttack/position = Vector2(124, -132)
+states/IdleHurt/node = SubResource("AnimationNodeBlendTree_23ixv")
+states/IdleHurt/position = Vector2(72, 0)
+states/RunHurt/node = SubResource("AnimationNodeBlendTree_3vwwc")
+states/RunHurt/position = Vector2(707, -8)
+states/Running/node = SubResource("AnimationNodeAnimation_b1nvr")
+states/Running/position = Vector2(686, 117)
+states/RunningAttack/node = SubResource("AnimationNodeBlendTree_rexfu")
+states/RunningAttack/position = Vector2(977, -67)
+states/Start/position = Vector2(154, 117)
+states/skeleton_warrior_anims_Death_A/node = SubResource("AnimationNodeAnimation_5w8lr")
+states/skeleton_warrior_anims_Death_A/position = Vector2(520, -106)
+transitions = ["Idle", "Running", SubResource("AnimationNodeStateMachineTransition_ubqvv"), "Running", "Idle", SubResource("AnimationNodeStateMachineTransition_jaeif"), "Start", "Idle", SubResource("AnimationNodeStateMachineTransition_sq5f6"), "Idle", "IdleAttack", SubResource("AnimationNodeStateMachineTransition_qdttd"), "Running", "RunningAttack", SubResource("AnimationNodeStateMachineTransition_b1nvr"), "RunningAttack", "Running", SubResource("AnimationNodeStateMachineTransition_d811w"), "IdleAttack", "Idle", SubResource("AnimationNodeStateMachineTransition_fewmc"), "Idle", "IdleHurt", SubResource("AnimationNodeStateMachineTransition_5w8lr"), "IdleHurt", "Idle", SubResource("AnimationNodeStateMachineTransition_tixal"), "Running", "RunHurt", SubResource("AnimationNodeStateMachineTransition_3vwwc"), "RunHurt", "Running", SubResource("AnimationNodeStateMachineTransition_mw7wq"), "RunningAttack", "RunHurt", SubResource("AnimationNodeStateMachineTransition_w1mfo"), "IdleAttack", "IdleHurt", SubResource("AnimationNodeStateMachineTransition_23ixv"), "Running", "skeleton_warrior_anims_Death_A", SubResource("AnimationNodeStateMachineTransition_lylrq"), "Idle", "skeleton_warrior_anims_Death_A", SubResource("AnimationNodeStateMachineTransition_8r2w0"), "IdleAttack", "skeleton_warrior_anims_Death_A", SubResource("AnimationNodeStateMachineTransition_0t0jh"), "RunningAttack", "skeleton_warrior_anims_Death_A", SubResource("AnimationNodeStateMachineTransition_xv815")]
+graph_offset = Vector2(-329, -149)

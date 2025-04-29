@@ -1,0 +1,33 @@
+[gd_resource type="AnimationNodeStateMachine" load_steps=7 format=3 uid="uid://dfiqnb6nv0ppq"]
+
+[ext_resource type="AnimationNodeStateMachine" uid="uid://cnycqb6u7yq8q" path="res://Assets/barbarian_state_machine_sub.tres" id="1_f5aac"]
+[ext_resource type="AnimationNodeStateMachine" uid="uid://bqrgpxeg4lfge" path="res://Assets/barbarian_state_machine_dominant.tres" id="2_isyrq"]
+
+[sub_resource type="AnimationNodeBlend2" id="AnimationNodeBlend2_4d3ns"]
+filters = ["Rig/Skeleton3D:chest", "Rig/Skeleton3D:elbowIK.l", "Rig/Skeleton3D:elbowIK.r", "Rig/Skeleton3D:hand.r", "Rig/Skeleton3D:handIK.l", "Rig/Skeleton3D:handIK.r", "Rig/Skeleton3D:handslot.r", "Rig/Skeleton3D:hips", "Rig/Skeleton3D:lowerarm.r", "Rig/Skeleton3D:spine", "Rig/Skeleton3D:upperarm.l", "Rig/Skeleton3D:upperarm.r"]
+
+[sub_resource type="AnimationNodeBlendTree" id="AnimationNodeBlendTree_l6tm4"]
+graph_offset = Vector2(-234.528, 68.3931)
+nodes/Blend2/node = SubResource("AnimationNodeBlend2_4d3ns")
+nodes/Blend2/position = Vector2(40, 120)
+nodes/Dom/node = ExtResource("2_isyrq")
+nodes/Dom/position = Vector2(-260, 160)
+nodes/Sub/node = ExtResource("1_f5aac")
+nodes/Sub/position = Vector2(-260, 540)
+nodes/output/position = Vector2(320, 140)
+node_connections = [&"Blend2", 0, &"Dom", &"Blend2", 1, &"Sub", &"output", 0, &"Blend2"]
+
+[sub_resource type="AnimationNodeBlendTree" id="AnimationNodeBlendTree_hkmse"]
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_f5aac"]
+advance_mode = 2
+
+[resource]
+states/BlendTree/node = SubResource("AnimationNodeBlendTree_l6tm4")
+states/BlendTree/position = Vector2(216, 69)
+states/End/position = Vector2(831, 93)
+states/IdleHold/node = SubResource("AnimationNodeBlendTree_hkmse")
+states/IdleHold/position = Vector2(-222, -261)
+states/Start/position = Vector2(-49, 107)
+transitions = ["Start", "BlendTree", SubResource("AnimationNodeStateMachineTransition_f5aac")]
+graph_offset = Vector2(-299, -19)

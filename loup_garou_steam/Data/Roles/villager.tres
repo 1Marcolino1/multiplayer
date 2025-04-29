@@ -1,0 +1,8 @@
+[gd_resource type="Resource" script_class="Role" load_steps=2 format=3 uid="uid://bo8yxm405ih43"]
+
+[ext_resource type="Script" uid="uid://hvpdo7cd1dhw" path="res://Data/Roles/role.gd" id="1_x7gja"]
+
+[resource]
+script = ExtResource("1_x7gja")
+name = "Villager"
+metadata/_custom_type_script = "uid://hvpdo7cd1dhw"

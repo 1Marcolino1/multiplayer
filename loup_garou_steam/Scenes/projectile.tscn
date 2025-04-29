@@ -1,0 +1,41 @@
+[gd_scene load_steps=4 format=3 uid="uid://mrhwiixmglll"]
+
+[ext_resource type="PackedScene" uid="uid://cbvmlxca0phc3" path="res://Scenes/model_scenes/axe_1_handed.tscn" id="1_f8cdk"]
+[ext_resource type="Script" uid="uid://blkn65r5vp05l" path="res://Scripts/projectile.gd" id="1_yr2qt"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_at5ip"]
+size = Vector3(0.322022, 0.703505, 0.730591)
+
+[node name="RigidBody3D" type="RigidBody3D" node_paths=PackedStringArray("hitbox")]
+collision_layer = 0
+collision_mask = 4
+axis_lock_angular_y = true
+script = ExtResource("1_yr2qt")
+hitbox = NodePath("axe_1handed/HitBoxArea3D")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.00793469, 0.642815, -0.26593)
+shape = SubResource("BoxShape3D_at5ip")
+
+[node name="axe_1handed" parent="." instance=ExtResource("1_f8cdk")]
+
+[node name="axe_1handed" parent="axe_1handed" index="0"]
+transform = Transform3D(-4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, 0, 0, 0)
+
+[node name="HitBoxArea3D" parent="axe_1handed" index="1"]
+collision_mask = 5
+
+[node name="CollisionShape3D" parent="axe_1handed/HitBoxArea3D" index="0"]
+transform = Transform3D(0.999842, 0.0177676, 0.00227873, -0.0176894, 0.99938, -0.0306642, -0.00282213, 0.0306191, 0.999534, 0.0150796, 0.667491, -0.218812)
+disabled = false
+
+[node name="Marker3D" type="Marker3D" parent="axe_1handed"]
+transform = Transform3D(0.992143, -0.125108, 3.43437e-10, 0.125108, 0.992143, -5.46865e-09, 3.43437e-10, 5.46865e-09, 1, -0.0204264, -0.225759, 8.92866e-10)
+
+[node name="Timer" type="Timer" parent="."]
+wait_time = 2.0
+autostart = true
+
+[connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]
+
+[editable path="axe_1handed"]
